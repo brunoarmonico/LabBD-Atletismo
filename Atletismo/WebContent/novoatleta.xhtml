@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Novo atleta</title>
+</head>
+<h:body>
+<h:messages showSummary="true" tooltip="true"/>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel value="Nome:"/>
+			<h:inputText value="#{eventoBeans.atleta.nome}" styleClass="form-control"/>
+			
+			<h:outputLabel value="Sexo: "/>
+			<h:selectOneMenu value="#{eventoBeans.atleta.sexo}" styleClass="form-control">
+				<f:selectItem itemValue="m" itemLabel="Masculino"/>
+				<f:selectItem itemValue="f" itemLabel="Feminino"/>
+			</h:selectOneMenu>
+			
+			<h:outputLabel value="Pais:"/>
+			<h:inputText value="#{eventoBeans.atleta.codigoPais}" styleClass="form-control"/>	
+			
+			<h:commandButton value="Adicionar" action="#{eventoBeans.adicionarAtleta}"/>	
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

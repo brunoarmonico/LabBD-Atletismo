@@ -5,13 +5,19 @@
 		xmlns:f="http://java.sun.com/jsf/core">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Insert title here</title>
+<title>Campeonato de Atletismo</title>
 </head>
 <h:body>
 	<h1>Lista de Resultados</h1>
-	
-	<h:dataTable value="#{votacaoBean.lista}" var="e">
-				<h:column>#{e}</h:column>
+	<h:dataTable value="#{provasBeans.listaProvas}" var="e">
+		<h:column>
+			<f:facet name="header">Evento</f:facet>
+			#{e.nome}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Sexo</f:facet>
+			#{e.sexo}
+		</h:column>
 	</h:dataTable>
 	
 	<h:form>
