@@ -1,42 +1,19 @@
 package controller;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
+import java.util.List;
 
 import model.Atleta;
-import model.Resultado;
+import model.Prova;
 import persistence.DBEvento;
 
-@ManagedBean
-@ViewScoped
 public class ControlaEvento {
-	private Atleta atleta = new Atleta();
-	private Resultado resultado = new Resultado();
 	private DBEvento bd = new DBEvento();
+
+	public String adicionarAtleta(Atleta atleta) {
+		return bd.novoAtleta(atleta);
+	}
 	
-
-	public Atleta getAtleta() {
-		return atleta;
-	}
-
-	public void setAtleta(Atleta atleta) {
-		this.atleta = atleta;
-	}
-
-	public Resultado getResultado() {
-		return resultado;
-	}
-
-	public void setResultado(Resultado resultado) {
-		this.resultado = resultado;
-	}
-
-	public void adicionarAtleta() {
-		String retorno = bd.novoAtleta(atleta);
-		if (retorno != null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(retorno));
-		}
+	public List<Prova> listarProvas(){
+		return bd.recebeProva();
 	}
 }

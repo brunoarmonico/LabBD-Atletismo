@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import controller.ControlaEvento;
 import model.Atleta;
 import model.Resultado;
 import persistence.DBEvento;
@@ -14,7 +15,7 @@ import persistence.DBEvento;
 public class EventoBeans {
 	private Atleta atleta = new Atleta();
 	private Resultado resultado = new Resultado();
-	private DBEvento bd = new DBEvento();
+	private ControlaEvento ce = new ControlaEvento();
 	
 
 	public Atleta getAtleta() {
@@ -34,7 +35,7 @@ public class EventoBeans {
 	}
 
 	public void adicionarAtleta() {
-		String retorno = bd.novoAtleta(atleta);
+		String retorno = ce.adicionarAtleta(atleta);
 		if (retorno != null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(retorno));
 		}

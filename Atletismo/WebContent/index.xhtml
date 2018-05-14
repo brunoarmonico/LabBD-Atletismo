@@ -9,10 +9,10 @@
 </head>
 <h:body>
 	<h1>Lista de Resultados</h1>
-	<h:dataTable value="#{provasBeans.listaProvas}" var="e">
+	<h:dataTable value="#{provaBeans.listaProvas}" var="e">
 		<h:column>
 			<f:facet name="header">Evento</f:facet>
-			#{e.nome}
+			#{e.nomeProva}
 		</h:column>
 		<h:column>
 			<f:facet name="header">Sexo</f:facet>
@@ -20,8 +20,8 @@
 		</h:column>
 	</h:dataTable>
 	
-	<h:form>
+	<!-- <h:form>
 		<h:commandButton value="Adicionar novo resultado" action=""/>
-	</h:form>
+	</h:form> -->
 </h:body>
 </html>

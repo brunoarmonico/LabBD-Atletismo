@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import controller.ControlaEvento;
 import model.Prova;
 
 @ManagedBean
@@ -15,6 +16,7 @@ import model.Prova;
 public class ProvaBeans {
 	private Prova prova = new Prova();
 	private List<Prova> listaProvas = new ArrayList<>();
+	private ControlaEvento cd = new ControlaEvento();
 
 	public Prova getProva() {
 		return prova;
@@ -25,6 +27,7 @@ public class ProvaBeans {
 	}
 
 	public List<Prova> getListaProvas() {
+		recebeProvas();
 		return listaProvas;
 	}
 
@@ -32,7 +35,10 @@ public class ProvaBeans {
 		this.listaProvas = listaProvas;
 	}
 
-	public void recebeProvas() {
-
+	private void recebeProvas() {
+		if (listaProvas.isEmpty() == true) {
+			System.out.println("aqui!!!");
+			listaProvas = cd.listarProvas();
+		}
 	}
 }
