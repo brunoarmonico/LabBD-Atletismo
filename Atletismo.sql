@@ -24,7 +24,7 @@ sexo char(1) not null
 )
 
 create table resultado(
-
+id_resultado int identity(1,1) primary key,
 id_prova int,
 id_atleta int,
 tempo varchar(15) null,
