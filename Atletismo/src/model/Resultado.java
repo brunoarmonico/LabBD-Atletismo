@@ -5,7 +5,8 @@ import java.sql.Time;
 public class Resultado {
 	
 	private int id_resultado;
-	private String nomeProva;
+	private String codigo_pais;
+	private int id_Prova;
 	private String nomeAtleta;
 	private Time tempo;
 	private int bateria;
@@ -18,11 +19,11 @@ public class Resultado {
 	public void setId_resultado(int id_resultado) {
 		this.id_resultado = id_resultado;
 	}
-	public String getNomeProva() {
-		return nomeProva;
+	public int getId_Prova() {
+		return id_Prova;
 	}
-	public void setNomeProva(String nomeProva) {
-		this.nomeProva = nomeProva;
+	public void setId_Prova(int id_Prova) {
+		this.id_Prova = id_Prova;
 	}
 	public String getNomeAtleta() {
 		return nomeAtleta;
@@ -53,5 +54,11 @@ public class Resultado {
 	}
 	public void setFase(String fase) {
 		this.fase = fase;
+	}
+	public String getCodigo_pais() {
+		return codigo_pais;
+	}
+	public void setCodigo_pais(String codigo_pais) {
+		this.codigo_pais = codigo_pais;
 	}
 }

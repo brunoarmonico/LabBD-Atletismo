@@ -12,23 +12,35 @@
 <h:body>
 <h:messages showSummary="true" tooltip="true"/>
 	<h:form>
-		<h:panelGrid columns="2">
-			<h:selectOneMenu value="#{resultadoBeans.resultado.id_prova}" styleClass="form-control">
-				<f:selectItem itemValue="#{}" itemLabel="#{provaBeans.listaProvas.nomeProva}"/>
-			</h:selectOneMenu>
-		
+		<h:panelGrid columns="2">	
 			<h:outputLabel value="Número do atleta:"/>
 			<h:inputText value="#{resultadoBeans.resultado.id_resultado}" styleClass="form-control"/>
 			
-			<h:outputLabel value=": "/>
-			<h:selectOneMenu value="#{eventoBeans.atleta.sexo}" styleClass="form-control">
-				<f:selectItem itemValue="m" itemLabel="Masculino"/>
-				<f:selectItem itemValue="f" itemLabel="Feminino"/>
+			<h:outputLabel value="Codigo do pais: "/>
+			<h:selectOneMenu value="#{resultadoBeans.resultado.codigo_pais}" styleClass="form-control">
+				<f:selectItem itemValue="#{paisBeans.listaPais.codigo}" itemLabel="#{paisBeans.listaPais.nome}"/>
 			</h:selectOneMenu>
 			
-			<h:outputLabel value="Pais:"/>
-			<h:inputText value="#{eventoBeans.atleta.codigoPais}" styleClass="form-control"/>	
+			<h:outputLabel value="Prova: "/>
+			<h:selectOneMenu value="#{resultadoBeans.resultado.id_Prova}" styleClass="form-control">
+				<f:selectItem itemValue="#{provaBeans.listaProvas.idProva}" itemLabel="#{provaBeans.listaProvas.nomeProva}"/>
+			</h:selectOneMenu>
 			
+			<h:outputLabel value="Tempo:"/>
+			<h:inputText value="#{resultadoBeans.resultado.tempo}" styleClass="form-control"/>	
+			
+			<h:outputLabel value="Bateria:"/>
+			<h:inputText value="#{resultadoBeans.resultado.bateria}" styleClass="form-control"/>	
+			
+			<h:outputLabel value="Distancia:"/>
+			<h:inputText value="#{resultadoBeans.resultado.distancia}" styleClass="form-control"/>	
+			
+			<h:outputLabel value="Fase:"/>
+			<h:selectOneMenu value="#{resultadoBeans.resultado.fase}" styleClass="form-control">	
+				<f:selectItem itemValue="Inicial" itemLabel="Inicial"/>
+				<f:selectItem itemValue="Final" itemLabel="Final"/>
+			</h:selectOneMenu>
+						
 			<h:commandButton value="Adicionar" action="#{eventoBeans.adicionarAtleta}"/>	
 		</h:panelGrid>
 	</h:form>

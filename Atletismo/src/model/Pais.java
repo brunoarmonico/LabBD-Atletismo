@@ -1,8 +1,10 @@
 package model;
 
 public class Pais {
+	
 	private String codigo;
 	private String nome;
+	
 	public String getCodigo() {
 		return codigo;
 	}
