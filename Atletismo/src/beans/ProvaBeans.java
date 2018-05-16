@@ -37,7 +37,6 @@ public class ProvaBeans {
 
 	private void recebeProvas() {
 		if (listaProvas.isEmpty() == true) {
-			System.out.println("aqui!!!");
 			listaProvas = cd.listarProvas();
 		}
 	}
