@@ -1,8 +1,10 @@
 package persistence;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,24 @@ public class DBEvento implements IBDEvento{
 
 	@Override
 	public String novoAtleta(Atleta atleta) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection con = DBUtil.getInstance().getConnection();
+		String query = "{call pr_adicionaAtleta (?, ?, ?, ?)}";
+		String saida = null;
+		try {
+			System.out.println(atleta.getNome()+ " - " +atleta.getSexo());
+			CallableStatement ps = con.prepareCall(query);
+			ps.setString(1, atleta.getNome());
+			ps.setString(2, atleta.getSexo());
+			ps.setString(3, atleta.getCodigoPais());
+			ps.registerOutParameter(4, Types.VARCHAR);
+			ps.execute();
+			saida = (ps.getString(4));
+			ps.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return saida;
 	}
 
 	@Override
