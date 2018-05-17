@@ -196,3 +196,17 @@ begin
 	end
 return 
 end
+
+create function fn_lista_pais() 
+returns @pais table (
+
+codigo char(3),
+nome varchar(50)
+)
+as 
+begin
+	insert into @pais
+	select * from pais
+return
+end
+	select * from fn_lista_pais()        

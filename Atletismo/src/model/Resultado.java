@@ -10,7 +10,7 @@ public class Resultado {
 	private String nomeAtleta;
 	private Time tempo;
 	private int bateria;
-	private String distancia;
+	private double distancia;
 	private String fase;
 	
 	public int getId_resultado() {
@@ -43,10 +43,10 @@ public class Resultado {
 	public void setBateria(int bateria) {
 		this.bateria = bateria;
 	}
-	public String getDistancia() {
+	public double getDistancia() {
 		return distancia;
 	}
-	public void setDistancia(String distancia) {
+	public void setDistancia(double distancia) {
 		this.distancia = distancia;
 	}
 	public String getFase() {

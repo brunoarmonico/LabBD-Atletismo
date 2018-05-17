@@ -3,8 +3,10 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import controller.ControlaEvento;
 import model.Pais;
@@ -24,10 +26,16 @@ public class PaisBeans {
 		this.pais = pais;
 	}
 	public List<Pais> getListaPais() {
+		recebePais();
 		return listaPais;
 	}
 	public void setListaPais(List<Pais> listaPais) {
 		this.listaPais = listaPais;
 	}
-
+	
+	public void recebePais() {
+		if (listaPais.isEmpty() == true) {
+		listaPais = cd.recebePaises();
+		}
+	}
 }

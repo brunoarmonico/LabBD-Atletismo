@@ -3,8 +3,10 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import controller.ControlaEvento;
 import model.Resultado;
@@ -35,5 +37,12 @@ public class ResultadoBeans {
 	}
 	public void setBuscaResultado(Resultado buscaResultado) {
 		this.buscaResultado = buscaResultado;
+	}
+	
+	public void enviarResultado() {
+		String retorno = cd.adicionarResultado(resultado);
+		if (retorno != null) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(retorno));
+		}
 	}
 }
