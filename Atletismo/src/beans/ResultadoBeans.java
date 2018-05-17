@@ -14,6 +14,7 @@ import model.Resultado;
 public class ResultadoBeans {
 	
 	private Resultado resultado = new Resultado();
+	private Resultado buscaResultado = new Resultado();
 	private List<Resultado> listaResultados = new ArrayList<>();
 	private ControlaEvento cd = new ControlaEvento();
 	
@@ -28,5 +29,11 @@ public class ResultadoBeans {
 	}
 	public void setListaResultados(List<Resultado> listaResultados) {
 		this.listaResultados = listaResultados;
+	}
+	public Resultado getBuscaResultado() {
+		return buscaResultado;
+	}
+	public void setBuscaResultado(Resultado buscaResultado) {
+		this.buscaResultado = buscaResultado;
 	}
 }

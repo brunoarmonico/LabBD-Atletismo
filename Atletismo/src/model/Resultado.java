@@ -3,7 +3,7 @@ package model;
 import java.sql.Time;
 
 public class Resultado {
-	
+	private int id_atleta;
 	private int id_resultado;
 	private String codigo_pais;
 	private int id_Prova;
@@ -60,5 +60,11 @@ public class Resultado {
 	}
 	public void setCodigo_pais(String codigo_pais) {
 		this.codigo_pais = codigo_pais;
+	}
+	public int getId_atleta() {
+		return id_atleta;
+	}
+	public void setId_atleta(int id_atleta) {
+		this.id_atleta = id_atleta;
 	}
 }
