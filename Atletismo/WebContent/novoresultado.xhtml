@@ -2,8 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html 	xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:p="http://primefaces.org/ui">
+		xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <h:outputStylesheet name="bootstrap.min.css" library="css"/>
@@ -17,18 +16,13 @@
 			<h:outputLabel value="Número do atleta:"/>
 			<h:inputText value="#{resultadoBeans.resultado.id_atleta}" styleClass="form-control"/>
 			
-			<h:outputLabel value="Codigo do pais: "/>
-			<h:selectOneMenu value="#{resultadoBeans.resultado.codigo_pais}" styleClass="form-control">
-				<f:selectItems value="#{paisBeans.listaPais}" var="l" itemValue="#{l.codigo}" itemLabel="#{l.nome}"/>
-			</h:selectOneMenu>
-			
 			<h:outputLabel value="Prova: "/>
 			<h:selectOneMenu value="#{resultadoBeans.resultado.id_Prova}" styleClass="form-control">
 				<f:selectItems value="#{provaBeans.listaProvas}" var="l" itemValue="#{l.idProva}" itemLabel="#{l.nomeProva}"/>
 			</h:selectOneMenu>
 			
 			<h:outputLabel value="Tempo:"/>
-			<h:inputText value="#{resultadoBeans.resultado.tempo}" styleClass="form-control"/>	
+			<h:inputText value="#{resultadoBeans.resultado.tempo}" styleClass="form-control" />
 			
 			<h:outputLabel value="Bateria:"/>
 			<h:inputText value="#{resultadoBeans.resultado.bateria}" min="1" max="6" increment="1" styleClass="form-control"/>	
@@ -42,7 +36,7 @@
 				<f:selectItem itemValue="Final" itemLabel="Final"/>
 			</h:selectOneMenu>
 						
-			<h:commandButton value="Adicionar" action="#{eventoBeans.adicionarAtleta}"/>	
+			<h:commandButton value="Adicionar" action="#{resultadoBeans.enviarResultado}"/>	
 		</h:panelGrid>
 	</h:form>
 </h:body>

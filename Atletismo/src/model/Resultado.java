@@ -1,14 +1,13 @@
 package model;
 
-import java.sql.Time;
-
 public class Resultado {
 	private int id_atleta;
 	private int id_resultado;
 	private String codigo_pais;
+	private String nomePais;
 	private int id_Prova;
 	private String nomeAtleta;
-	private Time tempo;
+	private String tempo = null;
 	private int bateria;
 	private double distancia;
 	private String fase;
@@ -31,10 +30,10 @@ public class Resultado {
 	public void setNomeAtleta(String nomeAtleta) {
 		this.nomeAtleta = nomeAtleta;
 	}
-	public Time getTempo() {
+	public String getTempo() {
 		return tempo;
 	}
-	public void setTempo(Time tempo) {
+	public void setTempo(String tempo) {
 		this.tempo = tempo;
 	}
 	public int getBateria() {
@@ -66,5 +65,11 @@ public class Resultado {
 	}
 	public void setId_atleta(int id_atleta) {
 		this.id_atleta = id_atleta;
+	}
+	public String getNomePais() {
+		return nomePais;
+	}
+	public void setNomePais(String nomePais) {
+		this.nomePais = nomePais;
 	}
 }

@@ -26,4 +26,8 @@ public class ControlaEvento {
 	public List<Pais> recebePaises() {
 		return bd.recebeListaPaises();
 	}
+	
+	public List<Resultado> listarResultados(Resultado resultado){
+		return bd.recebeResultadoEvento(resultado);
+	}
 }

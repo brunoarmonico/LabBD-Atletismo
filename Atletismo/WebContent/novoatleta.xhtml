@@ -23,7 +23,9 @@
 			</h:selectOneMenu>
 			
 			<h:outputLabel value="Pais:"/>
-			<h:inputText value="#{eventoBeans.atleta.codigoPais}" styleClass="form-control"/>	
+			<h:selectOneMenu value="#{eventoBeans.atleta.codigoPais}" styleClass="form-control">
+				<f:selectItems value="#{paisBeans.listaPais}" var="l" itemValue="#{l.codigo}" itemLabel="#{l.nome}"/>
+			</h:selectOneMenu>
 			
 			<h:commandButton value="Adicionar" action="#{eventoBeans.adicionarAtleta}"/>	
 		</h:panelGrid>

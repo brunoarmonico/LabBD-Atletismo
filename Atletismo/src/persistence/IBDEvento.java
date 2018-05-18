@@ -13,4 +13,5 @@ public interface IBDEvento {
 	String novoResultadoEvento(Resultado resultado);
 	List<Prova> recebeProva();
 	List<Pais> recebeListaPaises();
+	List<Resultado> recebeResultadoEvento(Resultado resultado);
 }
