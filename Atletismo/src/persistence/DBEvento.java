@@ -63,32 +63,26 @@ public class DBEvento implements IBDEvento {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Erro");
+			saida = e.toString().trim();
 		}
 		return saida;
 	}
 
 	@Override
 	public List<Prova> recebeProva() {
-
 		Connection con = DBUtil.getInstance().getConnection();
 		String query = "select * from fn_retorna_prova()";
 		List<Prova> lista = new ArrayList<Prova>();
-
 		try {
-
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-
 				Prova prova = new Prova();
 				prova.setIdProva(rs.getInt("id_prova"));
 				prova.setNomeProva(rs.getString("nome_prova"));
 				prova.setSexo(rs.getString("sexo"));
 				lista.add(prova);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,7 +98,6 @@ public class DBEvento implements IBDEvento {
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-
 				Pais pais = new Pais();
 				pais.setNome(rs.getString("nome"));
 				pais.setCodigo(rs.getString("codigo"));
@@ -121,15 +114,14 @@ public class DBEvento implements IBDEvento {
 	public List<Resultado> recebeResultadoEvento(Resultado resultado) {
 		Connection con = DBUtil.getInstance().getConnection();
 		List<Resultado> lista = new ArrayList<Resultado>();
-		String query = "select * from fn_resultadoBateria()";
+		String query = "select * from fn_resultadoBateria(?, ?, ?)";
 		try {
-
+			System.out.println(resultado.getId_Prova()+ " - " + resultado.getBateria() + " - " + resultado.getFase() );
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.setInt(1, resultado.getId_Prova());
 			ps.setInt(2, resultado.getBateria());
 			ps.setString(3, resultado.getFase());
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
 				Resultado re = new Resultado();
 				re.setNomeAtleta(rs.getString("nome_atleta"));
@@ -137,6 +129,7 @@ public class DBEvento implements IBDEvento {
 				re.setTempo(rs.getString("tempo"));
 				re.setDistancia(rs.getDouble("distancia"));
 				lista.add(re);
+				System.out.println(re.getNomeAtleta() + " - " + re.getNomePais());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

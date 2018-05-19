@@ -7,14 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <h:outputStylesheet name="bootstrap.min.css" library="css"/>
 <h:outputScript name="bootstrap.min.js" library="js"/>
-<title>Insert title here</title>
+<title>Resultado do Evento</title>
 </h:head>
 <h:body>
 	<h1>Provas</h1>
 	<h:form>
 	<h:panelGrid columns="2">
 	<h:outputLabel value="Bateria" />
-	<h:selectOneMenu value="#{resultadoBeans.buscaResultado.bateria}" styleClass="form-control">
+	<h:selectOneMenu value="#{resultadoBeans.buscaResultado.bateria}" styleClass="form-control" valueChangeListener="#{resultadoBeans.valueChanged}">
 		<f:selectItem itemValue="1" itemLabel="1"/>
 		<f:selectItem itemValue="2" itemLabel="2"/>
 		<f:selectItem itemValue="3" itemLabel="3"/>
@@ -23,10 +23,11 @@
 		<f:selectItem itemValue="6" itemLabel="6"/>
 	</h:selectOneMenu>
 	<h:outputLabel value="Fase" />
-	<h:selectOneMenu value="#{resultadoBeans.buscaResultado.fase}" styleClass="form-control">
+	<h:selectOneMenu value="#{resultadoBeans.buscaResultado.fase}" styleClass="form-control" valueChangeListener="#{resultadoBeans.valueChanged}">
 		<f:selectItem itemValue="Inicial" itemLabel="Inicial"/>
 		<f:selectItem itemValue="Final" itemLabel="Final"/>
 	</h:selectOneMenu>
+	 	<h:commandButton value="Pesquisar" action="#{resultadoBeans.recebeResultados}"/>
 	</h:panelGrid>	
 	</h:form>
 	
@@ -41,12 +42,13 @@
 		</h:column>
 		<h:column>
 			<f:facet name="header">Pais</f:facet>
-	        #{lr.codigo_pais}		
+	        #{lr.nomePais}		
 		</h:column>
 		<h:column>
 			<f:facet name="header">Resultado</f:facet>
-			#{lr.id_tempo}
+			#{lr.tempo}
 		</h:column>
-	</h:dataTable>		
+	</h:dataTable>
+	
 </h:body>
 </html>

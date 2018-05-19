@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 
 import controller.ControlaEvento;
@@ -40,6 +41,8 @@ public class ResultadoBeans {
 	}
 
 	public Resultado getBuscaResultado() {
+
+		recebeResultados();
 		return buscaResultado;
 	}
 
@@ -55,9 +58,22 @@ public class ResultadoBeans {
 	}
 
 	public void recebeResultados() {
-		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		String idProva = params.get("prova");
-		resultado.setId_Prova(Integer.parseInt(idProva));
-		this.listaResultados = cd.listarResultados(buscaResultado);
+		if (buscaResultado.getBateria() != 0 && buscaResultado.getFase() != null) {
+			Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String idProva = params.get("prova");
+			buscaResultado.setId_Prova(Integer.parseInt(idProva));
+			listaResultados = cd.listarResultados(buscaResultado);
+			return;
+		}
+		else {
+			buscaResultado.setBateria(1);
+			buscaResultado.setFase("inicial");
+			recebeResultados();
+		}
+		return;
+	}
+	
+	public void valueChanged(ValueChangeEvent event) {
+		 recebeResultados();
 	}
 }

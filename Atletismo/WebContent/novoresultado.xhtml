@@ -7,7 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <h:outputStylesheet name="bootstrap.min.css" library="css"/>
 <h:outputScript name="bootstrap.min.js" library="js"/>
-<title>Insert title here</title>
+<title>Novo resultado da prova</title>
+
 </h:head>
 <h:body>
 <h:messages showSummary="true" tooltip="true"/>
@@ -17,26 +18,26 @@
 			<h:inputText value="#{resultadoBeans.resultado.id_atleta}" styleClass="form-control"/>
 			
 			<h:outputLabel value="Prova: "/>
-			<h:selectOneMenu value="#{resultadoBeans.resultado.id_Prova}" styleClass="form-control">
+			<h:selectOneMenu value="#{resultadoBeans.resultado.id_Prova}" styleClass="form-control" id ="prova">
 				<f:selectItems value="#{provaBeans.listaProvas}" var="l" itemValue="#{l.idProva}" itemLabel="#{l.nomeProva}"/>
 			</h:selectOneMenu>
 			
-			<h:outputLabel value="Tempo:"/>
+			<h:outputLabel value="Tempo:" />
 			<h:inputText value="#{resultadoBeans.resultado.tempo}" styleClass="form-control" />
 			
 			<h:outputLabel value="Bateria:"/>
-			<h:inputText value="#{resultadoBeans.resultado.bateria}" min="1" max="6" increment="1" styleClass="form-control"/>	
+			<h:inputText value="#{resultadoBeans.resultado.bateria}" min="1" max="6" increment="1" styleClass="form-control"/>
 			
-			<h:outputLabel value="Distancia:"/>
-			<h:inputText value="#{resultadoBeans.resultado.distancia}" styleClass="form-control"/>	
+			<h:outputLabel value="Distancia:" />
+			<h:inputText value="#{resultadoBeans.resultado.distancia}" styleClass="form-control"/>
 			
 			<h:outputLabel value="Fase:"/>
-			<h:selectOneMenu value="#{resultadoBeans.resultado.fase}" styleClass="form-control">	
+			<h:selectOneMenu value="#{resultadoBeans.resultado.fase}" styleClass="form-control">
 				<f:selectItem itemValue="Inicial" itemLabel="Inicial"/>
 				<f:selectItem itemValue="Final" itemLabel="Final"/>
 			</h:selectOneMenu>
 						
-			<h:commandButton value="Adicionar" action="#{resultadoBeans.enviarResultado}"/>	
+			<h:commandButton value="Adicionar" action="#{resultadoBeans.enviarResultado}"/>
 		</h:panelGrid>
 	</h:form>
 </h:body>

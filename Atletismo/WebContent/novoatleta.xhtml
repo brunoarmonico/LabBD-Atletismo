@@ -14,20 +14,20 @@
 	<h:form>
 		<h:panelGrid columns="2">
 			<h:outputLabel value="Nome:"/>
-			<h:inputText value="#{eventoBeans.atleta.nome}" styleClass="form-control"/>
+			<h:inputText value="#{eventoBeans.atleta.nome}" styleClass="form-control" />
 			
 			<h:outputLabel value="Sexo: "/>
 			<h:selectOneMenu value="#{eventoBeans.atleta.sexo}" styleClass="form-control">
-				<f:selectItem itemValue="m" itemLabel="Masculino"/>
-				<f:selectItem itemValue="f" itemLabel="Feminino"/>
+				<f:selectItem itemValue="m" itemLabel="Masculino" />
+				<f:selectItem itemValue="f" itemLabel="Feminino" />
 			</h:selectOneMenu>
 			
 			<h:outputLabel value="Pais:"/>
 			<h:selectOneMenu value="#{eventoBeans.atleta.codigoPais}" styleClass="form-control">
-				<f:selectItems value="#{paisBeans.listaPais}" var="l" itemValue="#{l.codigo}" itemLabel="#{l.nome}"/>
+				<f:selectItems value="#{paisBeans.listaPais}" var="l" itemValue="#{l.codigo}" itemLabel="#{l.nome}" />
 			</h:selectOneMenu>
 			
-			<h:commandButton value="Adicionar" action="#{eventoBeans.adicionarAtleta}"/>	
+			<h:commandButton value="Adicionar" action="#{eventoBeans.adicionarAtleta}" />	
 		</h:panelGrid>
 	</h:form>
 </h:body>
