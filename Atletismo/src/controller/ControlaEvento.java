@@ -6,6 +6,7 @@ import model.Atleta;
 import model.Pais;
 import model.Prova;
 import model.Resultado;
+import model.ResultadoEvento;
 import persistence.DBEvento;
 
 public class ControlaEvento {
@@ -27,7 +28,7 @@ public class ControlaEvento {
 		return bd.recebeListaPaises();
 	}
 	
-	public List<Resultado> listarResultados(Resultado resultado){
+	public List<ResultadoEvento> listarResultados(Resultado resultado){
 		return bd.recebeResultadoEvento(resultado);
 	}
 }

@@ -117,6 +117,24 @@ foreign key(id_prova) references prova(id_prova),
 foreign key(id_atleta) references atleta(codigo),
 )
 
+create table record (
+nome varchar (100) not null,
+pais varchar (100) not null,
+resultado varchar (20) not null,
+idprova int not null,
+tipo varchar (20) not null,
+novorecord varchar (20) null
+)
+select cast(resultado as time) from record where idprova = 8 and tipo = 'world'
+select * from record
+select * from resultado
+drop table record
+
+insert into record values
+('fulano', 'uganda', '00:30:40.7752', 8, 'world', null),
+('fulano', 'uganda', '40', 1, 'world', null)
+
+
 create trigger t_resultado
 on resultado
 after update, delete
@@ -126,8 +144,9 @@ begin
 	raiserror('NÃO É POSSSIVEL EXCLUIR OU ALTERAR A TABELA', 16,1)
 end
 
-drop trigger t_max_competidores
-create trigger t_max_competidores
+drop trigger t_verifica_resultado
+
+create trigger t_verifica_resultado
 on resultado
 for insert
 as
@@ -135,11 +154,20 @@ declare @prova int  = (select id_prova from inserted),
 		@bateria int = (select bateria from inserted),
 		@fase varchar (20)  = (select fase from inserted),
 		@competidores int,
-		@idAtleta int = (select id_atleta from inserted)
+		@idAtleta int = (select id_atleta from inserted),
+		@participacoes int,
+		@sexoProva char (1)
 set @competidores = (select count(*) from resultado where id_prova = @prova and bateria = @bateria and fase = @fase)
-if (@prova <= 6)
+set @participacoes = (select count(*) from resultado where id_prova = @prova and id_atleta = @idAtleta and bateria = @bateria and fase = @fase)
+set @sexoProva = (select sexo from prova where id_prova = @prova)
+if (@sexoProva != (select sexo from atleta inner join inserted on inserted.id_atleta = atleta.codigo))
+begin 
+	rollback transaction
+	raiserror('SEXO INCOMPATIVEL COM ESTA PROVA', 16,1)
+end
+else if (@prova <= 6)
 begin
-	if ((select count(*) from resultado where id_prova = @prova and id_atleta = @idAtleta and bateria = @bateria and fase = @fase) <= 6)
+	if (@participacoes <= 6)
 	begin
 		if (@competidores > 20 and @fase = 'inicial')
 		begin
@@ -161,7 +189,7 @@ begin
 end
 else
 begin
-	if ((select count(*) from resultado where id_prova = @prova and id_atleta = @idAtleta and bateria = @bateria and fase = @fase) < 1)
+	if (@participacoes = 1)
 	begin
 		if (@competidores > 20 and @fase = 'inicial')
 		begin
@@ -181,14 +209,92 @@ begin
 		raiserror('ATLETA JA PARTICIPOU DESTA BATERIA', 16,1)
 	end
 end
+if (@prova <= 6)
+begin
+	if ((select resultado from record where idprova = @prova and tipo = 'event') is null)
+	begin
+		insert into record (nome, pais, resultado, idprova, tipo, novorecord)
+		select al.nome, pa.nome, convert(varchar, distancia), @prova, 'event', null from inserted ins
+			inner join atleta al
+			on al.codigo = ins.id_atleta
+			inner join pais pa
+			on pa.codigo = al.codigo_pais
+	end
+	if ((select distancia from inserted) > (select convert(decimal (7,2), resultado) from record where idprova = @prova and tipo = 'world'))
+	begin
+		delete from record where idprova = @prova and tipo = 'world'
+
+		insert into record (nome, pais, resultado, idprova, tipo, novorecord)
+		select al.nome, pa.nome, convert(varchar, distancia), @prova, 'world', 'green' from inserted ins
+			inner join atleta al
+			on al.codigo = ins.id_atleta
+			inner join pais pa
+			on pa.codigo = al.codigo_pais
+	end
+	if ((select distancia from inserted) > (select convert(decimal (7,2), resultado) from record where idprova = @prova and tipo = 'event'))
+	begin
+		delete from record where idprova = @prova and tipo = 'event'
+
+		insert into record (nome, pais, resultado, idprova, tipo, novorecord)
+		select al.nome, pa.nome, convert(varchar, distancia), @prova, 'event', 'blue' from inserted ins
+			inner join atleta al
+			on al.codigo = ins.id_atleta
+			inner join pais pa
+			on pa.codigo = al.codigo_pais
+	end
+end
+else
+begin
+	if ((select resultado from record where idprova = @prova and tipo = 'event') is null)
+	begin
+		insert into record (nome, pais, resultado, idprova, tipo, novorecord)
+		select al.nome, pa.nome, convert(varchar, tempo), @prova, 'event', null from inserted ins
+			inner join atleta al
+			on al.codigo = ins.id_atleta
+			inner join pais pa
+			on pa.codigo = al.codigo_pais
+	end
+	if ((select tempo from inserted) < (select convert(time, resultado) from record where idprova = @prova and tipo = 'world'))
+	begin
+		delete from record where idprova = @prova and tipo = 'world'
+
+		insert into record (nome, pais, resultado, idprova, tipo, novorecord)
+		select al.nome, pa.nome, convert(varchar, tempo), @prova, 'world', 'green' from inserted ins
+			inner join atleta al
+			on al.codigo = ins.id_atleta
+			inner join pais pa
+			on pa.codigo = al.codigo_pais
+	end
+	if ((select tempo from inserted) < (select convert(time, resultado) from record where idprova = @prova and tipo = 'event'))
+	begin
+		delete from record where idprova = @prova and tipo = 'event'
+
+		insert into record (nome, pais, resultado, idprova, tipo, novorecord)
+		select al.nome, pa.nome, convert(varchar, tempo), @prova, 'event', 'blue' from inserted ins
+			inner join atleta al
+			on al.codigo = ins.id_atleta
+			inner join pais pa
+			on pa.codigo = al.codigo_pais
+	end
+end
+
+select * from resultado
 
 drop procedure pr_adicionaResultado
 create procedure pr_adicionaResultado(@id_Prova int, @id_atleta int,  @tempo varchar(12), @bateria int, @distancia decimal (7,2), @fase varchar(20), @saida varchar(max) output)
 as
 begin
+	if (@distancia = 0)
+	begin
+		set @distancia = null
+	end
+	if (@tempo = '')
+	begin
+		set @tempo = null
+	end
 	if (@bateria >= 2 and @fase = 'inicial')
 	begin
-		if ((select @id_atleta from resultado where bateria = (@bateria - 1) and fase = 'inicial') is not null)
+		if ((select @id_atleta from resultado where bateria = (@bateria - 1) and fase = 'inicial' and id_prova = @id_Prova) is not null)
 		begin
 			insert into resultado values (@id_Prova, @id_atleta, convert(time, @tempo), @bateria, @distancia, @fase)
 			set @saida = 'RESULTADO INSERIDO COM SUCESSO!'
@@ -201,11 +307,11 @@ begin
 	else
 	if (@fase = 'final')
 	begin
-		if ((select @id_atleta from resultado where bateria = 6 and fase = 'inicial') is not null)
+		if ((select @id_atleta from resultado where bateria = 3 and fase = 'inicial') is not null)
 		begin
 			if (@bateria >= 2 and @fase = 'final')
 			begin
-				if ((select @id_atleta from resultado where bateria = (@bateria - 1) and fase = 'final') is not null)
+				if ((select @id_atleta from resultado where bateria = (@bateria - 1) and fase = 'final' and id_prova = @id_Prova) is not null)
 				begin
 					insert into resultado values (@id_Prova, @id_atleta, convert(time, @tempo), @bateria, @distancia, @fase)
 					set @saida = 'RESULTADO INSERIDO COM SUCESSO!'
@@ -234,18 +340,23 @@ begin
 	end
 end
 
+select * from record
 
 DECLARE @SAIDA VARCHAR(MAX)
-EXEC pr_adicionaResultado 1, 1, '00:45:44:114', 1, null, 'inicial', @saida output
+EXEC pr_adicionaResultado 8, 2, '00:10:55:9711', 2, 0, 'inicial', @saida output
 PRINT @SAIDA
 
+select * from resultado
+
+select * from fn_resultadoBateria(8, 1, 'inicial')
 drop function fn_resultadoBateria 
 create function fn_resultadoBateria (@id_prova int, @bateria int, @fase varchar (20))
-returns @resultado table(
-nome_atleta varchar (50),
-nome_pais varchar (50),
-tempo time null,
-distancia decimal (7,2) null
+returns @retorna table(
+id_atleta int,
+atleta varchar (50),
+pais varchar(20),
+resultado varchar(40),
+posicao varchar (10) null
 )
 as
 begin
@@ -258,27 +369,41 @@ begin
 	begin
 		set @maxFase = 3
 	end
-	if ((select top 1 tempo from resultado  where id_prova = @id_prova) is not null)
+	if (@id_prova <= 6)
 	begin
-		insert into @resultado (nome_atleta, nome_pais, tempo)
-		select top (@maxFase) al.nome, pa.nome, re.tempo from resultado re
+		insert into @retorna (id_atleta, atleta, pais, resultado, posicao)
+		select top (@maxFase) re.id_atleta, max(al.nome), max(pa.nome), max(re.distancia), null from resultado re
 		inner join atleta al
 		on re.id_atleta = al.codigo
 		inner join pais pa
 		on al.codigo_pais = pa.codigo
 		where re.id_prova = @id_prova and re.bateria = @bateria and re.fase = @fase 
-		order by tempo
+		group by re.id_atleta
+		order by max(re.distancia) desc
 	end
 	else
 	begin
-		insert @resultado (nome_atleta, nome_pais, distancia)
-		select top (@maxFase) al.nome, pa.nome, re.distancia from resultado re
+		insert @retorna (id_atleta, atleta, pais, resultado, posicao)
+		select top (@maxFase) re.id_atleta, al.nome, pa.nome, convert(varchar, re.tempo), null from resultado re
 		inner join atleta al
 		on re.id_atleta = al.codigo
 		inner join pais pa
 		on al.codigo_pais = pa.codigo
-		where re.id_prova = @id_prova and re.bateria = @bateria and re.fase = @fase 
-		order by distancia
+		where id_prova = @id_prova and bateria = @bateria and fase = @fase 
+		order by re.tempo
+
+		update @retorna
+		set posicao =  'Ouro'
+		where posicao = 1
+
+		update @retorna
+		set posicao =  'Prata'
+		where posicao = 2
+
+		update @retorna
+		set posicao =  'Bronze'
+		where posicao = 3
+
 	end
 return
 end
@@ -295,3 +420,17 @@ begin
 	select * from pais
 return
 end
+
+select * from resultado
+
+
+select * from resultado
+select * from atleta
+
+select top (8) re.id_atleta, al.nome, pa.nome, convert(varchar,re.tempo) from resultado re
+		inner join atleta al
+		on re.id_atleta = al.codigo
+		inner join pais pa
+		on al.codigo_pais = pa.codigo
+		where id_prova = 8 and bateria =1 and fase = 'inicial'
+		order by re.tempo

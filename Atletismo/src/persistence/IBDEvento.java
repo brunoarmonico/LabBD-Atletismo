@@ -6,6 +6,7 @@ import model.Atleta;
 import model.Pais;
 import model.Prova;
 import model.Resultado;
+import model.ResultadoEvento;
 
 public interface IBDEvento {
 
@@ -13,5 +14,5 @@ public interface IBDEvento {
 	String novoResultadoEvento(Resultado resultado);
 	List<Prova> recebeProva();
 	List<Pais> recebeListaPaises();
-	List<Resultado> recebeResultadoEvento(Resultado resultado);
+	List<ResultadoEvento> recebeResultadoEvento(Resultado resultado);
 }

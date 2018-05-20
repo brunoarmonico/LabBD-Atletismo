@@ -12,6 +12,7 @@ import model.Atleta;
 import model.Pais;
 import model.Prova;
 import model.Resultado;
+import model.ResultadoEvento;
 
 public class DBEvento implements IBDEvento {
 
@@ -111,10 +112,11 @@ public class DBEvento implements IBDEvento {
 	}
 
 	@Override
-	public List<Resultado> recebeResultadoEvento(Resultado resultado) {
+	public List<ResultadoEvento> recebeResultadoEvento(Resultado resultado) {
 		Connection con = DBUtil.getInstance().getConnection();
-		List<Resultado> lista = new ArrayList<Resultado>();
+		List<ResultadoEvento> lista = new ArrayList<ResultadoEvento>();
 		String query = "select * from fn_resultadoBateria(?, ?, ?)";
+		int cont = 1;
 		try {
 			System.out.println(resultado.getId_Prova()+ " - " + resultado.getBateria() + " - " + resultado.getFase() );
 			PreparedStatement ps = con.prepareStatement(query);
@@ -123,13 +125,21 @@ public class DBEvento implements IBDEvento {
 			ps.setString(3, resultado.getFase());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				Resultado re = new Resultado();
-				re.setNomeAtleta(rs.getString("nome_atleta"));
-				re.setNomePais(rs.getString("nome_pais"));
-				re.setTempo(rs.getString("tempo"));
-				re.setDistancia(rs.getDouble("distancia"));
+				System.out.println("passou");
+				ResultadoEvento re = new ResultadoEvento();
+				re.setIdAtleta(rs.getInt("id_atleta"));
+				re.setAtleta(rs.getString("atleta"));
+				re.setPais(rs.getString("pais"));
+				if (rs.getString("resultado") != null) {
+				re.setResultado(rs.getString("resultado"));
+				} else if (resultado.getId_Prova() <= 6) {
+					re.setResultado("FAULT");
+				} else {
+					re.setResultado("DNF");
+				}
+				re.setPosicao(cont);
+				cont++;
 				lista.add(re);
-				System.out.println(re.getNomeAtleta() + " - " + re.getNomePais());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
