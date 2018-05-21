@@ -5,6 +5,7 @@ import java.util.List;
 import model.Atleta;
 import model.Pais;
 import model.Prova;
+import model.Record;
 import model.Resultado;
 import model.ResultadoEvento;
 import persistence.DBEvento;
@@ -30,5 +31,9 @@ public class ControlaEvento {
 	
 	public List<ResultadoEvento> listarResultados(Resultado resultado){
 		return bd.recebeResultadoEvento(resultado);
+	}
+	
+	public List<Record> listarRecordes (int id){
+		return bd.recebeRecords(id);
 	}
 }

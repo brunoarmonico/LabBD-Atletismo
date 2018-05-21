@@ -28,8 +28,19 @@ $(document).ready(function(){
 });
 </script>
 <body>
+<div class="p-3 mb-2 bg-dark text-white">
+<h4 align="center">Cadastro de resultado de prova</h4>
+<hr>
+</div>
 	<% ControlaEvento cd = new ControlaEvento(); %>
 	<% List<Prova> provas = cd.listarProvas(); %>
+	<% String erro = (String)session.getAttribute("erroResultado"); %>
+	<% String sucesso = (String)session.getAttribute("sucessoResultado"); %>
+	<% if (erro != null) { %>
+		<div class="alert alert-danger" role="alert"><h4><% out.print(erro); %></h4></div>
+	<% } else if (sucesso != null) { %>
+		<div class="alert alert-success" role="alert"><h4><% out.print(sucesso); %></h4></div>
+	<% } %>
 	<form action="./ControleAtletismo" method="post">
 	<div>Codido do Atleta: <input type="text" name="codigo"/></div>
 	<div>Prova: <select name="prova" id="prova">

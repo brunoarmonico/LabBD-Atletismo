@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="java.util.List, model.Prova, controller.ControlaEvento, model.ResultadoEvento" %>
+<%@ page import="java.util.List, model.Prova, controller.ControlaEvento, model.ResultadoEvento, model.Record" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -10,6 +10,10 @@
 <title>Resultado Eventos</title>
 </head>
 <body>
+<div class="p-3 mb-2 bg-dark text-white">
+<h2 align="center">Evento de Atletismo</h2>
+<hr>
+</div>
 	<% ControlaEvento cd = new ControlaEvento(); %>
 	<% List<Prova> provas = cd.listarProvas(); %>
 	<form action="./ControleAtletismo" method="post">
@@ -30,9 +34,36 @@
 	<button type="submit" value="buscaResultado" name="botaoEnvio">Buscar</button>
 	</form>
 	<% List<ResultadoEvento> evento = (List<ResultadoEvento>)session.getAttribute("listaResultado"); %>
+	<% List<Record> record = (List<Record>)session.getAttribute("listaRecord"); %>
+	<% if (record == null || record.isEmpty()) { 
+		record = cd.listarRecordes(1);
+	} %>
+	<div align="center"> <h3>Recorde da Prova</h3> </div>
+		<table align="center" class="table table-striped">
+		<tr>
+			<th>Nome do Atleta</th>
+			<th>Pais</th>
+			<th>Resultado</th>
+			<th>Recorde</th>
+		</tr>
+		<% for (Record recorde : record) {
+			if (recorde.getCor() == null){
+				recorde.setCor("white");
+			} %>
+		<tr>
+			<td bgcolor="<% out.print(recorde.getCor()); %>"><% out.print(recorde.getNome()); %></td>
+			<td bgcolor="<% out.print(recorde.getCor()); %>"><% out.print(recorde.getPais()); %></td>
+			<td bgcolor="<% out.print(recorde.getCor()); %>"><% out.print(recorde.getResultado()); %></td>
+			<td bgcolor="<% out.print(recorde.getCor()); %>"><% out.print(recorde.getTipo()); %></td>
+		</tr>
+		<% } %>
+		</table>
+	<br>
 	<% String erro = (String)session.getAttribute("erro"); %>
+	<br>
 	<% if (evento != null && evento.size() > 0) { %>
-	<table id="tabelinha" align="center">
+	<div align="center"> <h3>Resultados da Prova</h3> </div>
+	<table id="tabelinha" align="center" class="table table-striped">
 		<tr>
 			<th>Numero do atleta</th>
 			<th>Atleta</th>
@@ -41,7 +72,6 @@
 			<th>Posicao</th>
 		</tr>
 		<% for (ResultadoEvento resultado : evento) {%>
-		<% System.out.println(" teste----" + resultado.getIdAtleta()); %>
 		<tr>
 			<td> <% out.print(resultado.getIdAtleta()); %> </td>
 			<td> <% out.print(resultado.getAtleta()); %> </td>
@@ -54,15 +84,16 @@
 	<% } else { %>
 		<% if (erro != null) { %>
 			<br>
-			<h3> <% out.print(erro); %></h3>
+			
+			<h5 class="alert alert-warning" role="alert"> <% out.print(erro); %></h5>
 		<% } %>
 	<% } %>
 	<br>
 	<br>
 	<form action="./ControleAtletismo" method="post">
 		<div align="center">
-			<button value="pgNovoAtleta" type="submit" name="botaoEnvio">Novo Atleta</button>
-			<button value="psNovoResultado" type="submit" name="botaoEnvio">Novo Resultado</button>
+			<button value="pgNovoAtleta" type="submit" name="botaoEnvio" class="btn default">Novo Atleta</button>
+			<button value="psNovoResultado" type="submit" name="botaoEnvio" class="btn default">Novo Resultado</button>
 		</div>
 	</form>
 </body>

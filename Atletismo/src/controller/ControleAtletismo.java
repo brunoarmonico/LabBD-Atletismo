@@ -54,6 +54,13 @@ public class ControleAtletismo extends HttpServlet {
 			atleta.setCodigoPais(request.getParameter("pais"));
 			atleta.setSexo(request.getParameter("sexo"));
 			retorno = ce.adicionarAtleta(atleta);
+			request.getSession().removeAttribute("sucessoAtleta");
+			request.getSession().removeAttribute("erroAtleta");
+			if (retorno.contains("SUCESSO") || retorno.contains("Sucesso")) {
+				request.getSession().setAttribute("sucessoAtleta", retorno);
+			} else {
+				request.getSession().setAttribute("erroAtleta", retorno);
+			}
 			response.sendRedirect("./novoatleta.jsp");
 		} else if ("novoResultado".equals(opcao)) {
 			Resultado resultado = new Resultado();
@@ -69,6 +76,13 @@ public class ControleAtletismo extends HttpServlet {
 			}
 			resultado.setFase(request.getParameter("fase"));
 			retorno = ce.adicionarResultado(resultado);
+			request.getSession().removeAttribute("sucessoResultado");
+			request.getSession().removeAttribute("erroResultado");
+			if (retorno.contains("SUCESSO") || retorno.contains("Sucesso")) {
+				request.getSession().setAttribute("sucessoResultado", retorno);
+			} else {
+				request.getSession().setAttribute("erroResultado", retorno);
+			}
 			response.sendRedirect("./novoresultado.jsp");
 		} else if ("buscaResultado".equals(opcao)) {
 			Resultado resultado = new Resultado();
@@ -76,17 +90,23 @@ public class ControleAtletismo extends HttpServlet {
 			resultado.setBateria(Integer.parseInt(request.getParameter("bateria")));
 			resultado.setFase(request.getParameter("fase"));
 			List<ResultadoEvento> lista = ce.listarResultados(resultado);
+			request.getSession().setAttribute("listaRecord", ce.listarRecordes(resultado.getId_Prova()));
+			request.getSession().removeAttribute("erro");
 			if (lista != null && lista.size() > 0) {
 				request.getSession().setAttribute("listaResultado", lista);
 			} else {
 				request.getSession().setAttribute("listaResultado", lista);
-				request.getSession().setAttribute("erro", "Nenhum resultado encontrado.");
+				request.getSession().setAttribute("erro",
+						"Nenhum resultado encontrado para o evento, bateria ou fase.");
 			}
-
 			response.sendRedirect("./index.jsp");
 		} else if ("pgNovoAtleta".equals(opcao)) {
+			request.getSession().removeAttribute("sucessoAtleta");
+			request.getSession().removeAttribute("erroAtleta");
 			response.sendRedirect("./novoatleta.jsp");
 		} else if ("psNovoResultado".equals(opcao)) {
+			request.getSession().removeAttribute("sucessoResultado");
+			request.getSession().removeAttribute("erroResultado");
 			response.sendRedirect("./novoresultado.jsp");
 		}
 	}

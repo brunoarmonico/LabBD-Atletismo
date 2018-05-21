@@ -11,6 +11,7 @@ import java.util.List;
 import model.Atleta;
 import model.Pais;
 import model.Prova;
+import model.Record;
 import model.Resultado;
 import model.ResultadoEvento;
 
@@ -33,7 +34,6 @@ public class DBEvento implements IBDEvento {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return saida;
 	}
 
@@ -42,9 +42,7 @@ public class DBEvento implements IBDEvento {
 		Connection con = DBUtil.getInstance().getConnection();
 		String query = "{call pr_adicionaResultado (?, ?, ?, ?, ?, ?, ?)}";
 		String saida = null;
-
 		try {
-
 			CallableStatement cs = con.prepareCall(query);
 			cs.setInt(1, resultado.getId_Prova());
 			cs.setInt(2, resultado.getId_atleta());
@@ -106,7 +104,6 @@ public class DBEvento implements IBDEvento {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Erro");
 		}
 		return lista;
 	}
@@ -118,32 +115,66 @@ public class DBEvento implements IBDEvento {
 		String query = "select * from fn_resultadoBateria(?, ?, ?)";
 		int cont = 1;
 		try {
-			System.out.println(resultado.getId_Prova()+ " - " + resultado.getBateria() + " - " + resultado.getFase() );
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.setInt(1, resultado.getId_Prova());
 			ps.setInt(2, resultado.getBateria());
 			ps.setString(3, resultado.getFase());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				System.out.println("passou");
 				ResultadoEvento re = new ResultadoEvento();
 				re.setIdAtleta(rs.getInt("id_atleta"));
 				re.setAtleta(rs.getString("atleta"));
 				re.setPais(rs.getString("pais"));
 				if (rs.getString("resultado") != null) {
-				re.setResultado(rs.getString("resultado"));
+					re.setResultado(rs.getString("resultado"));
 				} else if (resultado.getId_Prova() <= 6) {
 					re.setResultado("FAULT");
 				} else {
 					re.setResultado("DNF");
 				}
-				re.setPosicao(cont);
+				if (resultado.getBateria() == 3 && resultado.getFase().equals("final")) {
+					if (cont == 1) {
+					re.setPosicao("Ouro");
+					}
+					else if (cont == 2) {
+						re.setPosicao("Prata");
+					}
+					else if (cont == 3) {
+						re.setPosicao("Bronze");
+					}
+				} else {
+					re.setPosicao(""+cont);
+				}
 				cont++;
 				lista.add(re);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Erro");
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Record> recebeRecords(int id) {
+		// TODO Auto-generated method stub
+		Connection con = DBUtil.getInstance().getConnection();
+		List<Record> lista = new ArrayList<Record>();
+		String query = "select * from fn_recordes(?)";
+		try {
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Record re = new Record();
+				re.setNome(rs.getString("nome"));
+				re.setPais(rs.getString("pais"));
+				re.setResultado(rs.getString("resultado"));
+				re.setTipo(rs.getString("tipo"));
+				re.setCor(rs.getString("novorecord"));
+				lista.add(re);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return lista;
 	}

@@ -6,7 +6,7 @@ public class ResultadoEvento {
 	private String atleta;
 	private String pais;
 	private String resultado;
-	private int posicao;
+	private String posicao;
 	public int getIdAtleta() {
 		return idAtleta;
 	}
@@ -31,10 +31,10 @@ public class ResultadoEvento {
 	public void setResultado(String resultado) {
 		this.resultado = resultado;
 	}
-	public int getPosicao() {
+	public String getPosicao() {
 		return posicao;
 	}
-	public void setPosicao(int posicao) {
+	public void setPosicao(String posicao) {
 		this.posicao = posicao;
 	}
 }

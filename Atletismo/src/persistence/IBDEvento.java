@@ -5,6 +5,7 @@ import java.util.List;
 import model.Atleta;
 import model.Pais;
 import model.Prova;
+import model.Record;
 import model.Resultado;
 import model.ResultadoEvento;
 
@@ -15,4 +16,5 @@ public interface IBDEvento {
 	List<Prova> recebeProva();
 	List<Pais> recebeListaPaises();
 	List<ResultadoEvento> recebeResultadoEvento(Resultado resultado);
+	List<Record> recebeRecords(int id);
 }
