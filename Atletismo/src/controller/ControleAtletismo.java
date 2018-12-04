@@ -21,7 +21,7 @@ import persistence.DBEvento;
 @WebServlet("/ControleAtletismo")
 public class ControleAtletismo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ControlaEvento ce = new ControlaEvento();
+	private ControlaEvento ctrEvento = new ControlaEvento();
 
 	/**
 	 * Default constructor.
@@ -46,23 +46,29 @@ public class ControleAtletismo extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String opcao = request.getParameter("botaoEnvio");
-		String retorno = null;
-		if ("novoAtleta".equals(opcao)) {
+		
+		//Opção selecionada nos botões da pagina
+		String opcaoBtn = request.getParameter("botaoEnvio");
+		String msgRetorno = null;
+		
+		//Click botão de adicionar novo atleta
+		if ("novoAtleta".equals(opcaoBtn)) {
 			Atleta atleta = new Atleta();
 			atleta.setNome(request.getParameter("nome"));
 			atleta.setCodigoPais(request.getParameter("pais"));
 			atleta.setSexo(request.getParameter("sexo"));
-			retorno = ce.adicionarAtleta(atleta);
+			msgRetorno = ctrEvento.adicionarAtleta(atleta);
 			request.getSession().removeAttribute("sucessoAtleta");
 			request.getSession().removeAttribute("erroAtleta");
-			if (retorno.contains("SUCESSO") || retorno.contains("Sucesso")) {
-				request.getSession().setAttribute("sucessoAtleta", retorno);
+			if (msgRetorno.contains("SUCESSO") || msgRetorno.contains("Sucesso")) {
+				request.getSession().setAttribute("sucessoAtleta", msgRetorno);
 			} else {
-				request.getSession().setAttribute("erroAtleta", retorno);
+				request.getSession().setAttribute("erroAtleta", msgRetorno);
 			}
 			response.sendRedirect("./novoatleta.jsp");
-		} else if ("novoResultado".equals(opcao)) {
+			
+		// Click botão de adicionar novo resultado
+		} else if ("novoResultado".equals(opcaoBtn)) {
 			Resultado resultado = new Resultado();
 			resultado.setId_atleta(Integer.parseInt(request.getParameter("codigo")));
 			resultado.setId_Prova(Integer.parseInt(request.getParameter("prova")));
@@ -75,22 +81,24 @@ public class ControleAtletismo extends HttpServlet {
 				resultado.setDistancia(Double.parseDouble(distancia));
 			}
 			resultado.setFase(request.getParameter("fase"));
-			retorno = ce.adicionarResultado(resultado);
+			msgRetorno = ctrEvento.adicionarResultado(resultado);
 			request.getSession().removeAttribute("sucessoResultado");
 			request.getSession().removeAttribute("erroResultado");
-			if (retorno.contains("SUCESSO") || retorno.contains("Sucesso")) {
-				request.getSession().setAttribute("sucessoResultado", retorno);
+			if (msgRetorno.contains("SUCESSO") || msgRetorno.contains("Sucesso")) {
+				request.getSession().setAttribute("sucessoResultado", msgRetorno);
 			} else {
-				request.getSession().setAttribute("erroResultado", retorno);
+				request.getSession().setAttribute("erroResultado", msgRetorno);
 			}
 			response.sendRedirect("./novoresultado.jsp");
-		} else if ("buscaResultado".equals(opcao)) {
+			
+		//Click botão de buscar resultados
+		} else if ("buscaResultado".equals(opcaoBtn)) {
 			Resultado resultado = new Resultado();
 			resultado.setId_Prova((Integer.parseInt(request.getParameter("prova"))));
 			resultado.setBateria(Integer.parseInt(request.getParameter("bateria")));
 			resultado.setFase(request.getParameter("fase"));
-			List<ResultadoEvento> lista = ce.listarResultados(resultado);
-			request.getSession().setAttribute("listaRecord", ce.listarRecordes(resultado.getId_Prova()));
+			List<ResultadoEvento> lista = ctrEvento.listarResultados(resultado);
+			request.getSession().setAttribute("listaRecord", ctrEvento.listarRecordes(resultado.getId_Prova()));
 			request.getSession().removeAttribute("erro");
 			if (lista != null && lista.size() > 0) {
 				request.getSession().setAttribute("listaResultado", lista);
@@ -100,11 +108,16 @@ public class ControleAtletismo extends HttpServlet {
 						"Nenhum resultado encontrado para o evento, bateria ou fase.");
 			}
 			response.sendRedirect("./index.jsp");
-		} else if ("pgNovoAtleta".equals(opcao)) {
+			
+			
+		//Mover para a pagina "Novo Atleta" 
+		} else if ("pgNovoAtleta".equals(opcaoBtn)) {
 			request.getSession().removeAttribute("sucessoAtleta");
 			request.getSession().removeAttribute("erroAtleta");
 			response.sendRedirect("./novoatleta.jsp");
-		} else if ("psNovoResultado".equals(opcao)) {
+			
+		//Mover para a pagina "Novo Resultado"
+		} else if ("psNovoResultado".equals(opcaoBtn)) {
 			request.getSession().removeAttribute("sucessoResultado");
 			request.getSession().removeAttribute("erroResultado");
 			response.sendRedirect("./novoresultado.jsp");

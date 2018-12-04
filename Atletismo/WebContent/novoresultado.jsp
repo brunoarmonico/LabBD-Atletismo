@@ -10,10 +10,12 @@
 <title>Novo Resultado</title>
 </head>
 <script>
+//Inicia pagina com o campo de tempo escondido
 $(document).ready(function(){
 	$("#tempo").hide();
 });
 
+//Remove campo de tempo ou distancia dependendo da prova
 $(document).ready(function(){
 	$("#prova").click(function(){
 	var selecionado = $("#prova").val();
@@ -32,8 +34,10 @@ $(document).ready(function(){
 <h4 align="center">Cadastro de resultado de prova</h4>
 <hr>
 </div>
-	<% ControlaEvento cd = new ControlaEvento(); %>
-	<% List<Prova> provas = cd.listarProvas(); %>
+	<% ControlaEvento ctrEvento = new ControlaEvento(); %>
+	<% List<Prova> provas = ctrEvento.listarProvas(); %>
+	
+	<!-- Retorna mensagem de erro ou acerto do SQL -->
 	<% String erro = (String)session.getAttribute("erroResultado"); %>
 	<% String sucesso = (String)session.getAttribute("sucessoResultado"); %>
 	<% if (erro != null) { %>
@@ -41,12 +45,13 @@ $(document).ready(function(){
 	<% } else if (sucesso != null) { %>
 		<div class="alert alert-success" role="alert"><h4><% out.print(sucesso); %></h4></div>
 	<% } %>
+	
 	<form action="./ControleAtletismo" method="post">
 	<div>Codido do Atleta: <input type="text" name="codigo"/></div>
 	<div>Prova: <select name="prova" id="prova">
-	<% for (Prova lista : provas) { %>
-	<option value="<% out.print(lista.getIdProva()); %>"> <% out.print(lista.getNomeProva()); %></option>
-	<% } %>
+		<% for (Prova lista : provas) { %>
+		<option value="<% out.print(lista.getIdProva()); %>"> <% out.print(lista.getNomeProva()); %></option>
+		<% } %>
 	</select> </div>
 	<div>Bateria: <select name="bateria">
 			<option value="1"> 1 </option>
@@ -59,6 +64,7 @@ $(document).ready(function(){
 		<option value="inicial"> Inicial </option>
 		<option value="final"> Final </option>
 	</select></div>
+	<!-- Botão de cadastro de novo resultado -->
 	<button value="novoResultado" type="submit" name="botaoEnvio"> Adicionar </button>	
 	</form>
 </body>

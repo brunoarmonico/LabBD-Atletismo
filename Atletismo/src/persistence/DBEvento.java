@@ -19,6 +19,7 @@ public class DBEvento implements IBDEvento {
 
 	@Override
 	public String novoAtleta(Atleta atleta) {
+	//Adiciona novo resultado na Procedure [SQL]
 		Connection con = DBUtil.getInstance().getConnection();
 		String query = "{call pr_adicionaAtleta (?, ?, ?, ?)}";
 		String saida = null;
@@ -39,6 +40,7 @@ public class DBEvento implements IBDEvento {
 
 	@Override
 	public String novoResultadoEvento(Resultado resultado) {
+	//Adiciona novo resultado na Procedure [SQL]
 		Connection con = DBUtil.getInstance().getConnection();
 		String query = "{call pr_adicionaResultado (?, ?, ?, ?, ?, ?, ?)}";
 		String saida = null;
@@ -69,6 +71,7 @@ public class DBEvento implements IBDEvento {
 
 	@Override
 	public List<Prova> recebeProva() {
+	//Recebe lista de provas da Function [SQL]
 		Connection con = DBUtil.getInstance().getConnection();
 		String query = "select * from fn_retorna_prova()";
 		List<Prova> lista = new ArrayList<Prova>();
@@ -90,6 +93,7 @@ public class DBEvento implements IBDEvento {
 
 	@Override
 	public List<Pais> recebeListaPaises() {
+	//Recebe lista de paises da Function [SQL]
 		Connection con = DBUtil.getInstance().getConnection();
 		String query = "select * from fn_lista_pais()";
 		List<Pais> lista = new ArrayList<Pais>();
@@ -110,6 +114,7 @@ public class DBEvento implements IBDEvento {
 
 	@Override
 	public List<ResultadoEvento> recebeResultadoEvento(Resultado resultado) {
+	//Recebe lista de resultados do evento da Function [SQL]
 		Connection con = DBUtil.getInstance().getConnection();
 		List<ResultadoEvento> lista = new ArrayList<ResultadoEvento>();
 		String query = "select * from fn_resultadoBateria(?, ?, ?)";
@@ -156,7 +161,7 @@ public class DBEvento implements IBDEvento {
 
 	@Override
 	public List<Record> recebeRecords(int id) {
-		// TODO Auto-generated method stub
+	//Recebe lista de recordes da Function [SQL]
 		Connection con = DBUtil.getInstance().getConnection();
 		List<Record> lista = new ArrayList<Record>();
 		String query = "select * from fn_recordes(?)";

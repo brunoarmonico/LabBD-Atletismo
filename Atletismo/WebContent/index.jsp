@@ -14,30 +14,38 @@
 <h2 align="center">Evento de Atletismo</h2>
 <hr>
 </div>
-	<% ControlaEvento cd = new ControlaEvento(); %>
-	<% List<Prova> provas = cd.listarProvas(); %>
+	<% ControlaEvento ctrEvento = new ControlaEvento(); %>
+	
+	<!-- Busca lista de provas -->
+	<% List<Prova> provas = ctrEvento.listarProvas(); %>
 	<form action="./ControleAtletismo" method="post">
 	<div>Prova: <select name="prova" id="prova">
+	<!-- Lista as provas em uma combobox -->
 	<% for (Prova lista : provas) { %>
 	<option value="<% out.print(lista.getIdProva()); %>"> <% out.print(lista.getNomeProva()); %></option>
 	<% } %>
 	</select></div>
+	
 	<div>Bateria: <select name="bateria">
 			<option value="1"> 1 </option>
 			<option value="2"> 2 </option>
 			<option value="3"> 3 </option>		
 	</select></div>
+	
 	<div>Fase: <select name="fase">
 		<option value="inicial"> Inicial </option>
 		<option value="final"> Final </option>
 	</select></div>
 	<button type="submit" value="buscaResultado" name="botaoEnvio">Buscar</button>
 	</form>
+	
+	<!-- Recebe resultados e recordes -->
 	<% List<ResultadoEvento> evento = (List<ResultadoEvento>)session.getAttribute("listaResultado"); %>
 	<% List<Record> record = (List<Record>)session.getAttribute("listaRecord"); %>
 	<% if (record == null || record.isEmpty()) { 
-		record = cd.listarRecordes(1);
+		record = ctrEvento.listarRecordes(1);
 	} %>
+	
 	<div align="center"> <h3>Recorde da Prova</h3> </div>
 		<table align="center" class="table table-striped">
 		<tr>

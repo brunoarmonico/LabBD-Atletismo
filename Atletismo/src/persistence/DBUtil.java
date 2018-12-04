@@ -16,24 +16,21 @@ public class DBUtil {
 			System.out.println("logado");
 		} 
 		catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 		catch (ClassNotFoundException e) {
-			
 			e.printStackTrace();
 		}
 	}
+	
 	public static DBUtil getInstance() {
-		
 		if (instancia == null) {
-			
 			instancia = new DBUtil();
 		}
 		return instancia;
 	}
+	
 	public Connection getConnection() {
-		
 		return con;
 	}
 }
