@@ -7,9 +7,8 @@ Sistema web para competição de atletismo
 * JSP
 * SQL Server
 
-
 ---
-> **Este é um projeto acadêmico**
-> Faculdade de Tecnologia da Zona Leste
-> 5° Semestre - Laboratório de Banco de Dados
+> **Este é um projeto acadêmico** <br>
+> Faculdade de Tecnologia da Zona Leste <br>
+> 5° Semestre - Laboratório de Banco de Dados <br>
 > Maio/2018
