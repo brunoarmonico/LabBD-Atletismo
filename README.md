@@ -4,7 +4,7 @@ Sistema web para competição de atletismo
 
 ## O que foi usado
 * JAVA
-* JSP
+* JSP + Bootstrap
 * MVC
 * SQL Server (procedures, functions e triggers)
 
